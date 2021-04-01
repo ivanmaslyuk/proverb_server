@@ -122,6 +122,6 @@ STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'auth.authentication_classes.UsernameAuthentication',
+        'auth.authentication_classes.BasicAuthentication',
     ]
 }

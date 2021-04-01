@@ -1,17 +1,37 @@
+import base64
+import binascii
+
 from django.contrib.auth.models import User
 from rest_framework import authentication
 from rest_framework import exceptions
 
 
-class UsernameAuthentication(authentication.BaseAuthentication):
+class BasicAuthentication(authentication.BaseAuthentication):
     def authenticate(self, request):
-        username = request.headers.get('X-Username')
-        if not username:
-            raise exceptions.AuthenticationFailed('Username not provided.')
+        authorization = request.headers.get('Authorization')
+        if not authorization:
+            raise exceptions.AuthenticationFailed('No credentials provided.')
+
+        if not authorization.startswith('Basic '):
+            raise exceptions.AuthenticationFailed('Wrong format in Authorization header.')
+        credentials = authorization.replace('Basic ', '')
+
+        try:
+            credentials_decoded = base64.b64decode(credentials.encode('utf-8').decode('utf-8')).decode('utf-8')
+        except binascii.Error:
+            raise exceptions.AuthenticationFailed('Cannot decode credentials.')
+
+        try:
+            username, password = credentials_decoded.split(':')
+        except ValueError:
+            raise exceptions.AuthenticationFailed('Credentials format is invalid.')
 
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
             raise exceptions.AuthenticationFailed('No such user.')
+
+        if not user.check_password(password):
+            raise exceptions.AuthenticationFailed('Wrong password.')
 
         return user, None
