@@ -14,9 +14,9 @@ class BasicAuthentication(authentication.BaseAuthentication):
 
         if not authorization.startswith('Basic '):
             raise exceptions.AuthenticationFailed('Wrong format in Authorization header.')
-        credentials = authorization.replace('Basic ', '')
 
         try:
+            credentials = authorization.replace('Basic ', '')
             credentials_decoded = base64.b64decode(credentials.encode('utf-8').decode('utf-8')).decode('utf-8')
         except binascii.Error:
             raise exceptions.AuthenticationFailed('Cannot decode credentials.')
@@ -29,9 +29,9 @@ class BasicAuthentication(authentication.BaseAuthentication):
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
-            raise exceptions.AuthenticationFailed('No such user.')
+            raise exceptions.AuthenticationFailed('Wrong username or password.')
 
         if not user.check_password(password):
-            raise exceptions.AuthenticationFailed('Wrong password.')
+            raise exceptions.AuthenticationFailed('Wrong username or password.')
 
         return user, None
