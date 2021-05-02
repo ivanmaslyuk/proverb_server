@@ -17,7 +17,7 @@ class Request(models.Model):
     )
 
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
-    node = models.OneToOneField('main.Node', on_delete=models.CASCADE)
+    node = models.OneToOneField('main.Node', on_delete=models.CASCADE, related_name='request')
     name = models.CharField(max_length=500)
     url = models.CharField(max_length=1000, null=True, blank=True)
     method = models.CharField(max_length=100, default="GET")

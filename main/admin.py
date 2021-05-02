@@ -5,7 +5,7 @@ from .models import Request, Node
 
 @admin.register(Node)
 class NodeAdmin(admin.ModelAdmin):
-    list_display = 'uuid', 'is_folder', 'folder_name'
+    list_display = 'uuid', 'is_folder', 'folder_name', 'deleted'
     raw_id_fields = 'parent',
 
 

@@ -1,9 +1,11 @@
+from django.urls import path
 from rest_framework.routers import SimpleRouter
 
-from .views import NodeViewSet
+from .views import NodeViewSet, sync_check
 
-
-urlpatterns = []
+urlpatterns = [
+    path('sync-check/', sync_check, name='sync_check'),
+]
 
 router = SimpleRouter()
 
