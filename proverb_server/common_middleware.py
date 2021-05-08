@@ -2,7 +2,6 @@ import json
 from pprint import pprint
 
 from django.conf import settings
-from django.http import HttpResponse
 from rest_framework.response import Response
 
 

@@ -21,6 +21,7 @@ class Request(models.Model):
     name = models.CharField(max_length=500)
     url = models.CharField(max_length=1000, null=True, blank=True)
     method = models.CharField(max_length=100, default="GET")
+    tests = models.TextField(null=True, blank=True)
     raw_data = models.TextField(null=True, blank=True)
     content_type = models.CharField(
         max_length=500,
